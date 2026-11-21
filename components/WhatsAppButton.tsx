@@ -3,7 +3,6 @@
 import React from "react";
 import { contactContent } from "@/content/contact";
 import { trackEvent } from "@/lib/analytics";
-import Button from "@/components/Button";
 
 interface WhatsAppButtonProps {
   className?: string;
