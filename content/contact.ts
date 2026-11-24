@@ -62,24 +62,24 @@ export const contactContent: ContactConfig = {
     confirmFlag: "",
   },
   email: {
-    general: "contact@dreamzworkspaces.com [CONFIRM]",
-    projects: "projects@dreamzworkspaces.com [CONFIRM]",
+    general: "dreamzinteriorspune@gmail.com",
+    projects: "dreamzofficeinteriors@gmail.com",
     confirmFlag: "[CONFIRM: official email addresses]",
   },
   office: {
     addressLines: [
-      "Dreamz Interiors Headquarters [CONFIRM: exact street address]",
-      "Commercial Tower, Floor 4 [CONFIRM]",
+      "Dreamz Interiors Headquarters PUNE",
+      "Techno Center, Behind Gawade Petroleum, PCMC, Pune, Maharashtra 411033",
     ],
-    cityStateZip: "Mumbai / Bengaluru / Gurugram [CONFIRM: primary registered office]",
+    cityStateZip: "Pune Maharashtra 411033",
     country: "India",
     confirmFlag: "[CONFIRM: registered corporate office address]",
   },
   hours: {
-    days: "Monday – Saturday [CONFIRM]",
-    timeWindow: "9:30 AM – 6:30 PM IST [CONFIRM]",
+    days: "Monday – Saturday ",
+    timeWindow: "9:30 AM – 6:30 PM IST ",
     aiAvailability: "AI Voice Line available 24/7 for requirement logging",
-    confirmFlag: "[CONFIRM: official operating hours]",
+    confirmFlag: "10am to 6:30pm",
   },
   form: {
     title: "Request a Project Callback",
