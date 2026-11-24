@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { whenIntroDone } from "@/lib/intro";
 
 type Props = {
   src: string;
@@ -48,23 +47,29 @@ export default function ClipImage({
           }
 
           if (animateOnLoad || priority) {
-            // For above-the-fold or hero images: reveal cleanly once intro is done and stay visible!
-            gsap.set(el, { clipPath: "inset(0 100% 0 0)" });
-            gsap.set(img, { xPercent: -8, scale: 1.12 });
-
-            whenIntroDone().then(() => {
-              gsap.to(el, {
+            // Ensure image is visible, then animate smoothly
+            gsap.fromTo(
+              el,
+              { clipPath: "inset(0 100% 0 0)" },
+              {
                 clipPath: "inset(0 0% 0 0)",
-                duration: 1.3,
+                duration: 1.2,
                 ease: "power3.out",
-              });
-              gsap.to(img, {
+                delay: 0.1,
+                clearProps: "clipPath",
+              }
+            );
+            gsap.fromTo(
+              img,
+              { xPercent: -6, scale: 1.08 },
+              {
                 xPercent: 0,
                 scale: 1,
-                duration: 1.3,
+                duration: 1.2,
                 ease: "power3.out",
-              });
-            });
+                delay: 0.1,
+              }
+            );
             return;
           }
 
@@ -76,9 +81,10 @@ export default function ClipImage({
               clipPath: "inset(0 0% 0 0)",
               duration: 1.2,
               ease: "power3.out",
+              clearProps: "clipPath",
               scrollTrigger: {
                 trigger: el,
-                start: "top 88%",
+                start: "top 95%",
                 once: true,
               },
             }
