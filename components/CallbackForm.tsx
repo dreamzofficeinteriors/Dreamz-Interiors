@@ -80,10 +80,18 @@ export default function CallbackForm({
         body: JSON.stringify(validationResult.data),
       });
 
-      const data = await res.json();
+      let data: any = null;
+      const contentType = res.headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        try {
+          data = await res.json();
+        } catch {
+          data = null;
+        }
+      }
 
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || "Failed to submit callback request.");
+      if (!res.ok || (data && data.success === false)) {
+        throw new Error(data?.message || "Unable to submit callback request online at this moment.");
       }
 
       setStatus("success");
@@ -95,9 +103,25 @@ export default function CallbackForm({
     } catch (err: any) {
       setStatus("error");
       setErrorMessage(
-        err.message || "An unexpected error occurred. Please try calling or messaging on WhatsApp directly."
+        err.message || "An unexpected error occurred. Please submit directly via WhatsApp or call us."
       );
     }
+  };
+
+  const generateWhatsAppUrl = () => {
+    const text = [
+      "Hi Dreamz, I'd like to request a callback for a workspace project:",
+      formData.fullName ? `• Name: ${formData.fullName}` : "",
+      formData.phone ? `• Phone: ${formData.phone}` : "",
+      formData.company ? `• Company: ${formData.company}` : "",
+      formData.city ? `• City/Location: ${formData.city}` : "",
+      formData.projectType ? `• Scope: ${formData.projectType}` : "",
+      formData.brief ? `• Details: ${formData.brief}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    return `https://wa.me/917498061700?text=${encodeURIComponent(text)}`;
   };
 
   if (status === "success") {
@@ -160,9 +184,26 @@ export default function CallbackForm({
       {status === "error" && (
         <div
           role="alert"
-          className="bg-red-50 border border-red-200 text-red-800 text-xs sm:text-sm p-3.5 rounded-[2px]"
+          className="bg-red-50 border border-red-200 text-red-900 text-xs sm:text-sm p-4 rounded-[2px] space-y-3"
         >
-          {errorMessage}
+          <p className="font-medium">{errorMessage}</p>
+          <div className="pt-1 flex flex-wrap gap-2">
+            <a
+              href={generateWhatsAppUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-semibold text-xs px-3.5 py-2 rounded-[2px] transition-colors shadow-sm"
+            >
+              <span>💬 Send This Inquiry via WhatsApp</span>
+              <span>→</span>
+            </a>
+            <a
+              href="tel:+917498061700"
+              className="inline-flex items-center gap-1.5 bg-charcoal hover:bg-charcoal/90 text-paper font-semibold text-xs px-3.5 py-2 rounded-[2px] transition-colors"
+            >
+              <span>📞 Call +91 7498 061 700</span>
+            </a>
+          </div>
         </div>
       )}
 
