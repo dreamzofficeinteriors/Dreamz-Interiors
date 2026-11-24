@@ -212,7 +212,7 @@ export const homeContent = {
     },
     callCta: {
       label: "Call Dreamz",
-      href: "tel:+919552704302",
+      href: "tel:+917498061700",
     },
   },
 };

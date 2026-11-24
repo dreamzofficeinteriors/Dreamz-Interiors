@@ -45,8 +45,8 @@ export interface ContactConfig {
 
 export const contactContent: ContactConfig = {
   phone: {
-    display: "+91 95527 04302",
-    e164: "+919552704302",
+    display: "+91 7498 061 700",
+    e164: "+917498061700",
     description:
       "Answered by our AI voice assistant for immediate brief intake and designer callback scheduling.",
     isAiAssisted: true,
@@ -55,7 +55,7 @@ export const contactContent: ContactConfig = {
     confirmFlag: "",
   },
   whatsapp: {
-    display: "+91 74980 61700",
+    display: "+91 7498 061 700",
     numberOnly: "917498061700",
     prefilledMessage: "Hi Dreamz, I'd like to discuss a workspace project.",
     link: "https://wa.me/917498061700?text=Hi%20Dreamz,%20I'd%20like%20to%20discuss%20a%20workspace%20project.",

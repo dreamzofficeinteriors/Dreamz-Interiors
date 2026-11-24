@@ -159,14 +159,14 @@ sequenceDiagram
     autonumber
     actor Visitor as Workspace Client
     participant Web as Dreamz Website
-    participant AI as AI Calling Agent (+91 95527 04302)
-    participant WA as WhatsApp API (+91 74980 61700)
+    participant AI as AI Calling Agent (+91 7498 061 700)
+    participant WA as WhatsApp API (+91 7498 061 700)
     participant API as /api/callback
     participant CRM as Lead Webhook
 
     alt Voice Call (Immediate Intake)
         Visitor->>Web: Clicks "Call Dreamz"
-        Web->>AI: Directs to tel:+919552704302
+        Web->>AI: Directs to tel:+917498061700
         AI-->>Visitor: AI voice assistant captures brief, location, space size
     else Direct WhatsApp Chat
         Visitor->>Web: Clicks "Chat on WhatsApp"
@@ -246,8 +246,8 @@ The visual identity is grounded in an architectural palette with tactile contras
 ### Required Environment Variables:
 ```ini
 NEXT_PUBLIC_SITE_URL=https://dreamzworkspaces.com
-NEXT_PUBLIC_PHONE_NUMBER="+91 95527 04302"
-NEXT_PUBLIC_WHATSAPP_NUMBER="+91 74980 61700"
+NEXT_PUBLIC_PHONE_NUMBER="+91 7498 061 700"
+NEXT_PUBLIC_WHATSAPP_NUMBER="+91 7498 061 700"
 LEAD_WEBHOOK_URL=https://crm.dreamzworkspaces.com/webhook/leads
 NOTIFY_EMAIL_TO=leads@dreamzworkspaces.com
 NEXT_PUBLIC_ANALYTICS_ID=
