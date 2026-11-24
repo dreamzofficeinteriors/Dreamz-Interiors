@@ -87,11 +87,11 @@ export default function PinnedProcess() {
   return (
     <section
       ref={containerRef}
-      className="bg-charcoal text-paper py-20 md:py-28 relative overflow-hidden min-h-screen flex flex-col justify-center"
+      className="bg-charcoal text-paper py-16 md:py-24 lg:py-28 relative overflow-hidden lg:min-h-screen flex flex-col justify-center"
       aria-label="The 5-step delivery process"
     >
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start lg:items-center">
           {/* Left Column: Fixed Stage Context */}
           <div className="lg:col-span-5 space-y-6">
             <span className="text-xs uppercase tracking-widest font-semibold text-orange">
@@ -126,7 +126,7 @@ export default function PinnedProcess() {
               ))}
             </div>
 
-            <div className="pt-2">
+            <div className="pt-2 hidden lg:block">
               <Link
                 href="/process"
                 className="inline-flex items-center gap-2 font-heading text-xs font-semibold uppercase tracking-wider text-orange hover:underline"
@@ -137,76 +137,158 @@ export default function PinnedProcess() {
             </div>
           </div>
 
-          {/* Right Column: Step Cards Swapper (Desktop stack, Mobile vertical flow) */}
-          <div
-            ref={cardsWrapperRef}
-            className="lg:col-span-7 relative min-h-[460px] flex items-center"
-          >
-            {steps.map((step, index) => (
-              <div
-                key={step.stepNumber}
-                className="pinned-step-card lg:absolute lg:inset-0 bg-paper/5 border border-paper/15 rounded-[2px] p-6 sm:p-8 space-y-6 flex flex-col justify-between w-full mb-6 lg:mb-0"
+          {/* Right Column: Step Cards Swapper (Desktop stack, Mobile/Tablet active card) */}
+          <div className="lg:col-span-7 w-full">
+            {/* Tablet & Mobile Step Selector Tabs */}
+            <div
+              role="tablist"
+              aria-label="Process steps"
+              className="flex lg:hidden overflow-x-auto pb-3 gap-2 no-scrollbar border-b border-paper/10 mb-6 w-full"
+            >
+              {steps.map((s, idx) => (
+                <button
+                  key={s.stepNumber}
+                  type="button"
+                  role="tab"
+                  aria-selected={idx === activeStepIndex}
+                  onClick={() => setActiveStepIndex(idx)}
+                  className={`px-3.5 py-2 text-xs font-mono rounded-[2px] transition-all whitespace-nowrap flex items-center gap-2 border ${
+                    idx === activeStepIndex
+                      ? "bg-orange text-charcoal border-orange font-bold shadow-sm"
+                      : "bg-paper/5 text-silver/80 border-paper/10 hover:bg-paper/10"
+                  }`}
+                >
+                  <span>{s.stepNumber}</span>
+                  <span className="font-heading font-medium">{s.name}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Cards container */}
+            <div
+              ref={cardsWrapperRef}
+              className="relative w-full min-h-[460px] lg:min-h-[500px]"
+            >
+              {steps.map((step, index) => {
+                const isCurrent = index === activeStepIndex;
+                const nextStep = steps[index + 1];
+                const prevStep = steps[index - 1];
+
+                return (
+                  <div
+                    key={step.stepNumber}
+                    className={`pinned-step-card bg-paper/5 border border-paper/15 rounded-[2px] p-6 sm:p-8 space-y-6 flex flex-col justify-between w-full lg:absolute lg:inset-0 ${
+                      isCurrent ? "flex" : "hidden lg:flex"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between border-b border-paper/10 pb-4 gap-2 flex-wrap">
+                      <div className="flex items-baseline gap-3">
+                        <span className="font-mono text-xl sm:text-2xl font-bold text-orange">
+                          {step.stepNumber}
+                        </span>
+                        <h3 className="font-heading text-xl sm:text-2xl font-bold text-paper">
+                          {step.name}
+                        </h3>
+                      </div>
+                      <span className="text-xs text-silver/60 font-mono">
+                        Step {index + 1} of {steps.length}
+                      </span>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h4 className="font-heading text-base sm:text-lg font-bold text-paper">
+                        {step.headline}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-silver leading-relaxed">
+                        {step.shortSummary}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                      <div className="bg-charcoal/70 p-4 sm:p-5 rounded-[2px] border border-paper/10 space-y-2.5">
+                        <span className="text-[11px] uppercase tracking-wider font-semibold text-orange block">
+                          What Dreamz Handles
+                        </span>
+                        <ul className="space-y-2 text-xs text-silver leading-relaxed">
+                          {step.whatDreamzHandles.map((item, idx) => (
+                            <li key={idx} className="flex items-start gap-2">
+                              <span className="text-orange flex-shrink-0">•</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="bg-charcoal/50 p-4 sm:p-5 rounded-[2px] border border-paper/10 space-y-2.5">
+                        <span className="text-[11px] uppercase tracking-wider font-semibold text-silver/60 block">
+                          What You Avoid
+                        </span>
+                        <ul className="space-y-2 text-xs text-silver/80 leading-relaxed">
+                          {step.whatTheClientAvoids.map((item, idx) => (
+                            <li key={idx} className="flex items-start gap-2">
+                              <span className="text-silver/40 flex-shrink-0">✕</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {step.stepNumber === "05" && (
+                      <p className="text-[11px] text-silver/60 font-mono border-t border-paper/10 pt-2">
+                        Direct 1-year warranty coverage. Water and fire damage not covered.
+                      </p>
+                    )}
+
+                    {/* Tablet/Mobile Stepper Bottom Controls */}
+                    <div className="flex lg:hidden items-center justify-between pt-4 border-t border-paper/10 gap-3">
+                      {prevStep ? (
+                        <button
+                          type="button"
+                          onClick={() => setActiveStepIndex(index - 1)}
+                          className="text-xs font-mono text-silver/80 hover:text-paper flex items-center gap-1.5 py-1.5 px-2.5 rounded-[2px] border border-paper/10 hover:border-paper/30 transition-colors"
+                        >
+                          <span>←</span>
+                          <span>{prevStep.stepNumber} {prevStep.name}</span>
+                        </button>
+                      ) : (
+                        <div />
+                      )}
+
+                      {nextStep ? (
+                        <button
+                          type="button"
+                          onClick={() => setActiveStepIndex(index + 1)}
+                          className="text-xs font-mono text-charcoal bg-orange hover:bg-orange/90 font-semibold flex items-center gap-1.5 py-1.5 px-3 rounded-[2px] transition-colors ml-auto"
+                        >
+                          <span>{nextStep.stepNumber} {nextStep.name}</span>
+                          <span>→</span>
+                        </button>
+                      ) : (
+                        <Link
+                          href="/process"
+                          className="text-xs font-mono text-charcoal bg-orange hover:bg-orange/90 font-semibold flex items-center gap-1.5 py-1.5 px-3 rounded-[2px] transition-colors ml-auto"
+                        >
+                          <span>Process Specs</span>
+                          <span>→</span>
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Mobile/Tablet Link to Full Process */}
+            <div className="pt-6 lg:hidden flex justify-center">
+              <Link
+                href="/process"
+                className="inline-flex items-center gap-2 font-heading text-xs font-semibold uppercase tracking-wider text-orange hover:underline"
               >
-                <div className="flex items-center justify-between border-b border-paper/10 pb-4">
-                  <div className="flex items-baseline gap-3">
-                    <span className="font-mono text-xl sm:text-2xl font-bold text-orange">
-                      {step.stepNumber}
-                    </span>
-                    <h3 className="font-heading text-xl sm:text-2xl font-bold text-paper">
-                      {step.name}
-                    </h3>
-                  </div>
-                  <span className="text-xs text-silver/60 font-mono hidden sm:inline-block">
-                    Step {index + 1} of {steps.length}
-                  </span>
-                </div>
-
-                <div className="space-y-2">
-                  <h4 className="font-heading text-base sm:text-lg font-bold text-paper">
-                    {step.headline}
-                  </h4>
-                  <p className="text-xs sm:text-sm text-silver leading-relaxed">
-                    {step.shortSummary}
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                  <div className="bg-charcoal/70 p-4 rounded-[2px] border border-paper/10 space-y-2">
-                    <span className="text-[11px] uppercase tracking-wider font-semibold text-orange block">
-                      What Dreamz Handles
-                    </span>
-                    <ul className="space-y-1.5 text-xs text-silver">
-                      {step.whatDreamzHandles.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <span className="text-orange">•</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="bg-charcoal/50 p-4 rounded-[2px] border border-paper/10 space-y-2">
-                    <span className="text-[11px] uppercase tracking-wider font-semibold text-silver/60 block">
-                      What You Avoid
-                    </span>
-                    <ul className="space-y-1.5 text-xs text-silver/80">
-                      {step.whatTheClientAvoids.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <span className="text-silver/40">✕</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                {step.stepNumber === "05" && (
-                  <p className="text-[11px] text-silver/60 font-mono border-t border-paper/10 pt-2">
-                    Direct 1-year warranty coverage. Water and fire damage not covered.
-                  </p>
-                )}
-              </div>
-            ))}
+                <span>Full Process Specifications</span>
+                <span>→</span>
+              </Link>
+            </div>
           </div>
         </div>
       </Container>

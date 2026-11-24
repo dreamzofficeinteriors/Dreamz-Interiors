@@ -50,7 +50,7 @@ export default function Header() {
           {/* Logo / Brand Name */}
           <TransitionLink
             href="/"
-            className="group flex items-baseline gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 rounded-[2px]"
+            className="group flex items-baseline gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 rounded-[2px] flex-shrink-0"
             aria-label={`${brandContent.name} Home`}
           >
             <span className="font-heading text-2xl md:text-3xl font-bold tracking-tight text-charcoal flex items-center gap-1.5">
@@ -64,7 +64,7 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav
-            className="hidden md:flex items-center gap-8 lg:gap-10"
+            className="hidden md:flex items-center gap-5 lg:gap-8 xl:gap-10"
             aria-label="Main Navigation"
           >
             {navLinks.map((link) => {
@@ -89,7 +89,7 @@ export default function Header() {
           </nav>
 
           {/* Action CTAs */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-shrink-0">
             <Button
               href="/contact"
               variant="primary"
